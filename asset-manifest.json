@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/youTubeToMp3/static/css/main.7817209e.css",
-    "main.js": "/youTubeToMp3/static/js/main.1b4044ae.js",
+    "main.js": "/youTubeToMp3/static/js/main.82d604f0.js",
     "index.html": "/youTubeToMp3/index.html",
     "main.7817209e.css.map": "/youTubeToMp3/static/css/main.7817209e.css.map",
-    "main.1b4044ae.js.map": "/youTubeToMp3/static/js/main.1b4044ae.js.map"
+    "main.82d604f0.js.map": "/youTubeToMp3/static/js/main.82d604f0.js.map"
   },
   "entrypoints": [
     "static/css/main.7817209e.css",
-    "static/js/main.1b4044ae.js"
+    "static/js/main.82d604f0.js"
   ]
 }
