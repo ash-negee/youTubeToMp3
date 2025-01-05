@@ -4,6 +4,8 @@
 	http://jedwatson.github.io/classnames
 */
 
+/*! get-video-id v4.1.7 | @license MIT © Michael Wuergler | https://github.com/radiovisual/get-video-id */
+
 /**
  * @license React
  * react-dom-client.production.js
