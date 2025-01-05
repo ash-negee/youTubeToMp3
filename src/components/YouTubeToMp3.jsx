@@ -28,7 +28,7 @@ const CONVERSION_FEATURES = [
 
 const YOUTUBE_URL_PATTERN = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
 
-const YouTubeConverter = () => {
+function YouTubeConverter() {
 	// State initialization.
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
@@ -48,41 +48,39 @@ const YouTubeConverter = () => {
 		}
 	});
 
-	/**
-	 * Extracts the string after the last forward slash from a URL.
-	 * This function handles different URL formats and includes validation.
-	 * 
-	 * @param {string} url - The URL to process
-	 * @returns {string|null} The extracted string or null if invalid
-	 */
 	function getVideoID(url) {
-		try {
-			// Return null for invalid inputs
-			if (!url || typeof url !== 'string') {
-				return null;
-			}
-
-			// Find the first occurrence of '=' and '&'
-			const equalIndex = url.indexOf('=');
-			const ampIndex = url.indexOf('&', equalIndex);
-
-			// Return null if '=' not found
-			if (equalIndex === -1) {
-				return null;
-			}
-
-			// Extract the substring
-			// If '&' is not found, extract till the end of string
-			const result = ampIndex !== -1
-				? url.substring(equalIndex + 1, ampIndex)
-				: url.substring(equalIndex + 1);
-
-			// Return null if extracted string is empty
-			return result || null;
-		} catch (error) {
-			console.error('Error extracting string from URL:', error);
+		// Return null for invalid inputs
+		if (!url || typeof url !== 'string') {
 			return null;
 		}
+
+		// Handle youtu.be format
+		if (url.includes('youtu.be/')) {
+			const splitUrl = url.split('youtu.be/');
+			if (splitUrl.length < 2) return null;
+
+			// Get the part after youtu.be/ and before any query parameters
+			const videoID = splitUrl[1].split('?')[0];
+			return videoID || null;
+		}
+
+		// Handle standard youtube.com format
+		const equalIndex = url.indexOf('=');
+		const ampIndex = url.indexOf('&', equalIndex);
+
+		// Return null if '=' not found
+		if (equalIndex === -1) {
+			return null;
+		}
+
+		// Extract the substring
+		// If '&' is not found, extract till the end of string
+		const result = ampIndex === -1
+			? url.substring(equalIndex + 1)
+			: url.substring(equalIndex + 1, ampIndex);
+
+		// Return null if extracted string is empty
+		return result || null;
 	}
 
 	function getApiResponse(videoID) {
@@ -103,8 +101,9 @@ const YouTubeConverter = () => {
 	 * Handles the conversion process.
 	 * @param {Object} formData Form data containing video URL.
 	 */
-	const handleConversion = async (formData) => {
+	async function handleConversion(formData) {
 		const videoID = getVideoID(formData.videoUrl);
+		console.log(videoID);
 		setIframeSrc(`https://www.youtube.com/embed/${videoID}?si=68Irn7sTNPDBY1-X`);
 
 		try {
@@ -113,6 +112,7 @@ const YouTubeConverter = () => {
 
 			// Get API response.
 			const response = await getApiResponse(videoID);
+			console.log(response);
 			setTitle(response.data.title);
 			setConvertedUrl(response.data.link)
 
@@ -123,7 +123,7 @@ const YouTubeConverter = () => {
 		} finally {
 			setIsLoading(false);
 		}
-	};
+	}
 
 	/**
 	 * Renders the conversion form
@@ -227,6 +227,6 @@ const YouTubeConverter = () => {
 			</Row>
 		</Container>
 	);
-};
+}
 
 export default YouTubeConverter;
